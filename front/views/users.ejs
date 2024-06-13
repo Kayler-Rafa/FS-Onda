@@ -1,0 +1,118 @@
+<h1><%=title%></h1>
+
+<form id="userForm">
+    <input required type="hidden" name="id" id="id">
+    <label for="username">Nome</label> 
+    <input required name="username" id="username" type="text"> <br>
+    <label for="password">Senha</label> 
+    <input required name="password" id="password" type="text"> <br>
+    <label for="email">Email</label> 
+    <input required name="email" id="email" type="text"> <br>
+    <label for="phone">Telefone</label> 
+    <input required name="phone" id="phone" type="text"> <br>
+
+    <button type="submit">Enviar</button>
+    <button type="reset">Cancelar</button>
+</form>
+
+<span id="error"></span>
+
+<%if(error){%>
+    <span><%=error%></span>
+<%}%>
+
+<table>
+    <thead>
+        <tr>
+            <%for(let col of cols){%>
+            <th><%=col%></th>
+            <%}%>
+        </tr>
+    </thead>
+    <tbody>
+        <%for(let user of users){%>
+        <tr>
+            <%for(let prop in user){%>
+            <td><%=user[prop]%></td>
+            <%}%>
+            <td>
+                <button onclick="editUser('<%=user.id%>')">Editar</button>
+                <button onclick="deleteUser('<%=user.id%>')">Deletar</button>
+            </td>
+        </tr>
+        <%}%>
+    </tbody>
+</table>
+
+<script>
+    const form = document.getElementById('userForm')
+
+    form.addEventListener("submit", (e)=>{
+        e.preventDefault()
+        const user = mountDataForm()
+        let id = user.id;
+        let METHOD = id ? 'PUT' : 'POST';
+        let URL = id ? `/users/${id}` : 'users';
+        
+        createOrUpdate(user, URL, METHOD)
+    })
+
+    function createOrUpdate(user, URL, METHOD){
+        console.log(user)
+        fetch(URL, {
+            method: METHOD,
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(user)
+        })
+        .then(async (res)=>{ return await checkError(res) })
+        .then((user)=>{ 
+            form.reset()
+            window.location.reload()
+        })
+        .catch((error)=>{ document.getElementById('error').innerText = error})
+    }
+
+    function editUser(id){
+        fetch("/users/" + id, {
+            method: "GET"
+        })
+            .then(async (res)=>{ return await checkError(res) })
+                .then((user)=>{ 
+                    console.log('retornou o usuário', user) 
+                    for(let prop in user){
+                        const input = document.querySelector(`input[name="${prop}"]`)
+                        input ? input.value = user[prop] : input.value = ""
+                    }
+                })
+                .catch((error)=>{ document.getElementById('error').innerText = error})
+        }
+    
+    function deleteUser(id){
+        fetch("/users/" + id, {
+            method: "DELETE"
+        })
+            .then(async (res)=>{ return await checkError(res) })
+                .then((user)=>{ 
+                    window.location.reload()
+                })
+                .catch((error)=>{ document.getElementById('error').innerText = error})
+    }
+
+    async function checkError(res){
+        if(!res.ok){
+                    const err = await res.json()
+                    throw err
+                }
+                return res.json()
+    }
+
+    function mountDataForm(){
+        const formData = new FormData(form)
+        const user = {}
+        formData.forEach((v, k)=>{
+            user[k] = v
+        })
+        return user
+    }
+
+</script>

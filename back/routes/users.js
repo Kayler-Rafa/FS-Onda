@@ -46,22 +46,23 @@ router.get('/', function(req, res, next) {
 })
 
 // GET USER BY ID
-router.get('/:ID', function(req, res, next) {
+router.get('/:id', function(req, res, next) {
   const { id } = req.params;
-  db.get('SELECT * FROM users WHERE id = ?', [id], (err, user) => {
-    if(err){
-      console.log("User não encontrados ", err)
-      return res.status(500).send({error: "User não encontrados"})
+  db.get('SELECT * FROM users WHERE id = ?', [id], (err, row) => {
+    if (err) {
+      console.error('Usuário não encontrado', err);
+      return res.status(500).json({error: 'Usuário não encontrado'});
     }
-    if(!user) {
-      return res.status(404).send({error: "User não encontrados"})
+    if (!row) {
+      return res.status(404).json({error: 'Usuário não encontrado'});
     }
-      res.status(200).json(user)
-  })
-})
+    res.status(200).json(row);
+  });
+});
+
 
 // PUT USER
-router.put('/:ID', function(req, res, next) {
+router.put('/:id', function(req, res, next) {
   const { id } = req.params;
   const { username, password, email, phone} = req.body
   db.run('UPDATE users SET username = ?, password = ?, email = ?, phone = ? WHERE id = ?', [username, password, email, phone, id], (err) => {
