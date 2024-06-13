@@ -10,10 +10,12 @@ app.use(express.json())
 // IMPORT DAS ROTAS
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var petsRouter = require('./routes/pets');
 
 // DEFINE ENDPOINTS PARA ROTAS
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/pets', petsRouter);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
