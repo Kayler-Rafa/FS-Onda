@@ -1,0 +1,118 @@
+<h1><%=title%></h1>
+
+<form id="petForm">
+    <input required type="hidden" name="id" id="id">
+    <label for="name">Nome</label> 
+    <input required name="name" id="name" type="text"> <br>
+    <label for="race">Raça</label> 
+    <input required name="race" id="race" type="text"> <br>
+    <label for="colour">Cor</label> 
+    <input required name="colour" id="colour" type="text"> <br>
+    <label for="gender">Sexo</label> 
+    <input required name="gender" id="gender" type="text"> <br>
+
+    <button type="submit">Enviar</button>
+    <button type="reset">Cancelar</button>
+</form>
+
+<span id="error"></span>
+
+<%if(error){%>
+    <span><%=error%></span>
+<%}%>
+
+<table>
+    <thead>
+        <tr>
+            <%for(let col of cols){%>
+            <th><%=col%></th>
+            <%}%>
+        </tr>
+    </thead>
+    <tbody>
+        <%for(let pet of pets){%>
+        <tr>
+            <%for(let prop in pet){%>
+            <td><%=pet[prop]%></td>
+            <%}%>
+            <td>
+                <button onclick="editPet('<%=pet.id%>')">Editar</button>
+                <button onclick="deletePet('<%=pet.id%>')">Deletar</button>
+            </td>
+        </tr>
+        <%}%>
+    </tbody>
+</table>
+
+<script>
+    const form = document.getElementById('petForm')
+
+    form.addEventListener("submit", (e)=>{
+        e.preventDefault()
+        const pet = mountDataForm()
+        let id = pet.id;
+        let METHOD = id ? 'PUT' : 'POST';
+        let URL = id ? `/pets/${id}` : 'pets';
+        
+        createOrUpdate(pet, URL, METHOD)
+    })
+
+    function createOrUpdate(pet, URL, METHOD){
+        console.log(pet)
+        fetch(URL, {
+            method: METHOD,
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(pet)
+        })
+        .then(async (res)=>{ return await checkError(res) })
+        .then((pet)=>{ 
+            form.reset()
+            window.location.reload()
+        })
+        .catch((error)=>{ document.getElementById('error').innerText = error})
+    }
+
+    function editPet(id){
+        fetch("/pets/" + id, {
+            method: "GET"
+        })
+            .then(async (res)=>{ return await checkError(res) })
+                .then((pet)=>{ 
+                    console.log('retornou o usuário', pet) 
+                    for(let prop in pet){
+                        const input = document.querySelector(`input[name="${prop}"]`)
+                        input ? input.value = pet[prop] : input.value = ""
+                    }
+                })
+                .catch((error)=>{ document.getElementById('error').innerText = error})
+        }
+    
+    function deletePet(id){
+        fetch("/pets/" + id, {
+            method: "DELETE"
+        })
+            .then(async (res)=>{ return await checkError(res) })
+                .then((pet)=>{ 
+                    window.location.reload()
+                })
+                .catch((error)=>{ document.getElementById('error').innerText = error})
+    }
+
+    async function checkError(res){
+        if(!res.ok){
+                    const err = await res.json()
+                    throw err
+                }
+                return res.json()
+    }
+
+    function mountDataForm(){
+        const formData = new FormData(form)
+        const pet = {}
+        formData.forEach((v, k)=>{
+            pet[k] = v
+        })
+        return pet
+    }
+
+</script>

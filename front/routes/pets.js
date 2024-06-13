@@ -1,12 +1,12 @@
 var express = require('express');
 var router = express.Router();
-const url = "https://didactic-palm-tree-r9jx5qwwjx72p677-4000.app.github.dev/users/"
+const url = "https://didactic-palm-tree-r9jx5qwwjx72p677-3000.app.github.dev/pets/"
 
 
-/* GET users listing. */
+/* GET pets listing. */
 router.get('/', function(req, res, next) {
 
-  fetch(url,{method: 'GET'})
+  fetch(url, {method: 'GET'})
   .then(async (res)=>{
     if(!res.ok){
         const err = await res.json()
@@ -14,26 +14,26 @@ router.get('/', function(req, res, next) {
     }
     return res.json()
   })
-  .then((users)=>{
+  .then((pets)=>{
     console.log('get')
-    let title = "Gestão de Usuários"
-    let cols = ["Id", "Nome", "Senha", "Email", "Telefone", "Açôes"]
-    res.render('layout', {body: 'pages/users', title, users, cols, error: ""});
+    let title = "Gestão de pets"
+    let cols = ["Id", "Nome", "Raça", "Cor", "Sexo", "Açôes"]
+    res.render('layout', { body: 'pages/pets', title, pets, cols, error: "" });
   })
   .catch((error)=>{
     console.log('Erro: ', error)
-    res.render('layout', {body: 'pages/users', title: "Gestão de usuários", error});
+    res.render('layout', { body: 'pages/pets', title, error });
   })
   
 });
 
 
 router.post("/", (req, res) => {
-  const { username, password, email, phone } = req.body
-  fetch(url + '/register', {
+  const { name, race, colour, gender } = req.body
+  fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password, email, phone })
+    body: JSON.stringify({ name, race, colour, gender })
   }).then(async (res) => {
     if (!res.ok) {
       const err = await res.json()
@@ -41,8 +41,8 @@ router.post("/", (req, res) => {
     }
     return res.json()
   })
-    .then((user) => {
-      res.send(user)
+    .then((pet) => {
+      res.send(pet)
     })
     .catch((error) => {
       res.status(500).send(error)
@@ -52,11 +52,11 @@ router.post("/", (req, res) => {
 
 router.put("/:id", (req, res)=>{
   const { id } = req.params
-  const { username, password, email, phone } = req.body
+  const { name, race, clour, gender } = req.body
   fetch(url+id, {
     method: "PUT",
     headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ username, password, email, phone })
+    body: JSON.stringify({ name, race, clour, gender })
   })
   .then(async (res)=>{
     if(!res.ok){
@@ -65,8 +65,8 @@ router.put("/:id", (req, res)=>{
     }
     return res.json()
   })
-  .then((user)=>{
-    res.send(user);
+  .then((pet)=>{
+    res.send(pet);
   })
   .catch((error)=>{
     res.status(500).send(error);
@@ -86,8 +86,8 @@ router.delete("/:id", (req, res)=>{
     }
     return res.json()
   })
-  .then((user)=>{
-    res.send(user);
+  .then((pet)=>{
+    res.send(pet);
   })
   .catch((error)=>{
     res.status(500).send(error);
@@ -106,8 +106,8 @@ router.get("/:id", (req, res) => {
     }
     return res.json()
   })
-    .then((user) => {
-      res.send(user)
+    .then((pet) => {
+      res.send(pet)
     })
     .catch((error) => {
       res.status(500).send(error)
