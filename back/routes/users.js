@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var sqlite3 = require("sqlite3")
+var sqlite3 = require("sqlite3");
+var jwt = require('jsonwebtoken');
+var bcrypt = require('bcrypt');
 
 const db = new sqlite3.Database('./database/database.db')
 
@@ -21,16 +23,31 @@ db.run(`CREATE TABLE IF NOT EXISTS users (
 
 // POST USER
 router.post('/register', (req, res, next)=>{
-  const { username, password, email, phone } = req.body
   console.log(req.body)
-  db.run('INSERT INTO users (username, password, email, phone) VALUES (?,?,?,?)', [username, password, email, phone], (err)=>{
-    if(err){
-      console.log("Erro ao criar user: ", err)
-      return res.status(500).send({error: 'Erro ao criar user'})
-    } else {
-      res.status(201).send({message: "User criado com sucesso"})
-    }
-  })
+  const { username, password, email, phone } = req.body
+  
+  db.get('SELECT * FROM users WHERE username = ?', username, (err, row) => {
+  if (row) {
+    console.log("usuário ja existe", err)
+    return res.status(400).send({ error: 'usuário já existe' })
+  }else {
+    bcrypt.hash(password, 10, (err, hash) => {
+      if (err) {
+        console.log("erro ao criar hash da senha", err)
+        return res.status(500).send({ error: 'Erro ao criar hash da senha' })
+      } else {
+        db.run('INSERT INTO users (username, password, email, phone) VALUES (?,?,?,?)', [username, hash, email, phone], (err)=>{
+          if (err) {
+            console.log("Erro ao criar user: ", err)
+            return res.status(500).send({ error: 'Erro ao criar user' })
+          } else {
+            res.status(201).send({ message: "User criado com sucesso" })
+          }
+        })
+      }
+    }) 
+  }
+})
 })
 
 // GET USER 

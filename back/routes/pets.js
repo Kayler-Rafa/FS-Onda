@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var sqlite3 = require("sqlite3")
+var verifyJWT = require('../auth/verify-token');
 
 const db = new sqlite3.Database('./database/database.db')
 
@@ -34,7 +35,7 @@ router.post('/', (req, res) => {
 })
 
 /* GET pets listing. */
-router.get('/', function(req, res, next) {
+router.get('/', verifyJWT, function(req, res, next) {
   db.all('SELECT * FROM pets', (err, pets) => {
     if (err) {
       console.log("Pets não foram encontrados", err)
@@ -46,7 +47,7 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET single pet by ID. */
-router.get('/:id', function(req, res, next) {
+router.get('/:id', verifyJWT, function(req, res, next) {
   const { id } = req.params;
   db.get('SELECT * FROM pets WHERE id = ?', [id], (err, row) => {
     if (err) {
