@@ -62,7 +62,7 @@ router.get('/:id', verifyJWT, function(req, res, next) {
 });
 
 /* PUT update a pet. */
-router.put('/:id', function(req, res, next) {
+router.put('/:id', verifyJWT, function(req, res, next) {
   const { id } = req.params;
   const { name, race, colour, gender } = req.body;
   db.run('UPDATE pets SET name = ?, race = ?, colour = ?, gender = ? WHERE id = ?', [name, race, colour, gender, id], function(err) {
