@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const url = "https://didactic-robot-445pvpw57r435q65-4000.app.github.dev/pets/"
+const url = "https://upgraded-spoon-x547w765gvgfpgxq-4000.app.github.dev/pets/"
 
 
 // /* GET pets listing. */
@@ -10,7 +10,14 @@ router.get('/', function (req, res, next) {
 
   const token = req.session.token || ""
 
-  fetch(url, { method: 'GET' }) 
+
+  fetch(url, { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json', 
+      'Authorization': `Bearer ${token}`
+    }
+  }) 
     .then(async (res) => {
       if (!res.ok) {
         const err = await res.json()
@@ -24,16 +31,21 @@ router.get('/', function (req, res, next) {
     })
     .catch((error) => {
       console.log('Erro: ', error)
-      res.render('layout', { body: 'pages/pets', title, error, cols, pets: [] });
+     res.redirect('/login')
     })
   
 });
 
+// POST NEW PET
 router.post("/", (req, res) => {
   const { name, race, colour, gender } = req.body
+  const token = req.session.token || ""
   fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json",
+      'Authorization': `Bearer ${token}`
+    },
     body: JSON.stringify({ name, race, colour, gender })
   }).then(async (res) => {
     if (!res.ok) {
@@ -51,6 +63,7 @@ router.post("/", (req, res) => {
 })
 
 
+// UPDATE PET
 router.put("/:id", (req, res) => {
   const { id } = req.params
   const { name, race, colour, gender } = req.body
@@ -74,11 +87,16 @@ router.put("/:id", (req, res) => {
     })
 })
 
-
+// REMOVE PET
 router.delete("/:id", (req, res) => {
   const { id } = req.params
+  const token = req.session.token || ""
   fetch(url + id, {
-    method: "DELETE"
+    method: "DELETE",
+    headers: {
+      'Content-Type': 'application/json', 
+      'Authorization': `Bearer ${token}`
+    }
   })
     .then(async (res) => {
       if (!res.ok) {
@@ -95,11 +113,16 @@ router.delete("/:id", (req, res) => {
     })
 })
 
-
+// GET PET BY ID
 router.get("/:id", (req, res) => {
   const { id } = req.params
+  const token = req.session.token || ""
   fetch(url + id, {
-    method: "GET"
+    method: "GET",
+    headers: {
+      'Content-Type': 'application/json', 
+      'Authorization': `Bearer ${token}`
+    } 
   }).then(async (res) => {
     if (!res.ok) {
       const err = await res.json()

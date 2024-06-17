@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const url = "https://didactic-robot-445pvpw57r435q65-4000.app.github.dev/auth/login"
+const url = "https://upgraded-spoon-x547w765gvgfpgxq-4000.app.github.dev/auth/login"
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -24,7 +24,8 @@ router.post('/', (req, res) => {
             return res.json()
         })
         .then((data) => {
-            req.session.token = data.token
+            console.log('veio', data)
+            req.session.token = data.token  
             res.redirect('/pets')
         })
         .catch((error) => {

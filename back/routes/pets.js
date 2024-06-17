@@ -21,7 +21,7 @@ db.run(`CREATE TABLE IF NOT EXISTS pets (
 });
 
 /* POST create a new pet. */
-router.post('/', (req, res) => {
+router.post('/', verifyJWT, (req, res) => {
   console.log(req.body)
   const { name, race, colour, gender } = req.body
   db.run('INSERT INTO pets (name, race, colour, gender) VALUES (?,?,?,?)', [name, race, colour, gender], (err) => {
@@ -103,7 +103,7 @@ router.patch('/:id', function(req, res, next) {
 });
 
 /* DELETE a pet. */
-router.delete('/:id', function(req, res, next) {
+router.delete('/:id', verifyJWT, function(req, res, next) {
   const { id } = req.params;
   db.run('DELETE FROM pets WHERE id = ?', [id], function(err) {
     if (err) {
