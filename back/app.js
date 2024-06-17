@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 
-
 var rateLimit = require('express-rate-limit');
 var session = require('express-session');
 
@@ -17,10 +16,9 @@ app.use(express.json())
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100
+  max: 3,
+  keyGenerator: (req, res) => req.headers['x-forwarded-for'] || req.ip
 });
-
-app.use('/login', limiter);
 
 //CONFIG DA SESSÃO
 
@@ -41,7 +39,7 @@ var authRouter = require('./routes/auth');
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/pets', petsRouter);
-app.use('/auth', authRouter);
+app.use('/auth', limiter, authRouter);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
