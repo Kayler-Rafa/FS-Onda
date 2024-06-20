@@ -78,20 +78,6 @@ A API utiliza tokens JWT (JSON Web Tokens) para autenticação e autorização d
     "username": "usuario_exemplo",
     "password": "senha_exemplo"
   }
-## Autenticação
-
-A API utiliza tokens JWT (JSON Web Tokens) para autenticação e autorização dos usuários. Este método garante que apenas usuários autenticados possam acessar certos endpoints protegidos. Abaixo está uma explicação detalhada sobre o processo de autenticação:
-
-#### Login de Usuário
-- **URL:** `/login`
-- **Método:** `POST`
-- **Descrição:** Autentica o usuário e retorna um token JWT.
-- **Body Exemplo:**
-  ```json
-  {
-    "username": "usuario_exemplo",
-    "password": "senha_exemplo"
-  }
 ## Funcionamento:
 - O usuário envia seu nome de usuário e senha.
 - O servidor busca o usuário no banco de dados.
