@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const url = "https://upgraded-spoon-x547w765gvgfpgxq-4000.app.github.dev/auth/login"
+const url = "https://automatic-halibut-w4p9xrj9wr4hgvxq-4000.app.github.dev/auth/login"
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
