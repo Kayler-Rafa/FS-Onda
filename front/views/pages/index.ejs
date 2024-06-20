@@ -1,120 +1,437 @@
-<div id="body-wrapper">
-    <div class="section"><img class="logop" src="img/fundonovotec.png" alt="logo onda tec"></div>
-    <div class="section-mapa">
-        <br><br><br><br>
-        <h1>Visão</h1>
-        <h2>Objetivos da Onda Tec</h2>
-        <div class="texto-mapa">
-            <div class="linha-vertical"></div>
-            <img src="img/novomapa-removebg-preview.png" alt="mapa do brasil">
-            <p>
-                A empresa <span>OndaTec</span> tem como principal <span>objetivo</span> auxiliar cidadãos
-                brasileiros que se encontram em
-                situações adversas, como indígenas, pessoas com deficiência e crianças em situação de risco. Sua
-                dedicação está voltada para o desenvolvimento de soluções e projetos que visam aprimorar a qualidade
-                de vida dessas pessoas, além de <span>promover</span> maior igualdade e justiça social. A OndaTec
-                acredita
-                firmemente na importância de ir além do aspecto financeiro e investir em iniciativas que contribuam
-                para a construção de uma sociedade mais justa e solidária.
-                <br>
-                <span>Por meio de suas ações, a empresa busca
-                    criar um impacto positivo, proporcionando oportunidades e apoio a grupos independentes.</span>
-            </p>
-            <a href="mapa.html" target="_blank"><button class="btn-saiba">saiba mais</button></a>
+<style>
+
+* {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Saira Condensed', sans-serif;
+            background-color: #000000;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        /* Estilos do cabeçalho */
+        #menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background-color: #082b2c;
+            border-bottom: 3px solid #082b2c;
+            z-index: 1000;
+        }
+
+        #menu .item {
+            float: right;
+            margin: 7px 10px;
+            color: white;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .logop {
+            width: 100%;
+            margin-top: 50px;
+            margin-left: 50px;
+            margin-right: 50px;
+            left: 0;
+            background-repeat: no-repeat;
+        }
+
+        /* Estilos da seção de visão */
+        .section-mapa {
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .titulo-visao {
+            font-size: 48px;
+            color: #fff;
+        }
+
+        .subtitulo-objetivos {
+            font-size: 24px;
+            color: #a7ad2c;
+        }
+
+        .texto-mapa {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .mapa-img {
+            margin-right: 20px;
+        }
+
+        .mapa-texto {
+            max-width: 600px;
+            text-align: left;
+        }
+
+        .mapa-texto p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #fff;
+        }
+
+        .mapa-texto p span {
+            color: #629643;
+        }
+
+        .btn-saiba {
+            background-color: #082b2c;
+            color: white;
+            text-transform: none;
+            border: 2px solid transparent;
+            font-weight: bold;
+            padding: 13px 30px;
+            border-radius: 30px;
+            transition: .4s;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .btn-saiba:hover {
+            background-color: transparent;
+            border: 2px solid #629643;
+        }
+
+        /* Estilos da seção de apoio */
+        .backgroud-apoio {
+            background-color: #080808;
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .section-apoio {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .titulo-apoie {
+            font-size: 48px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .section-apoio h2 {
+            font-size: 24px;
+            color: #a7ad2c;
+            margin-bottom: 20px;
+        }
+
+        .section-apoio h3 {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .texto-apoio {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .apoio-texto {
+            max-width: 600px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .apoio-texto p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #fff;
+        }
+
+        .apoio-texto p span {
+            color: #629643;
+        }
+
+        .btn-apoio {
+            background-color: #082b2c;
+            color: white;
+            text-transform: none;
+            border: 2px solid transparent;
+            font-weight: bold;
+            padding: 15px 50px;
+            border-radius: 30px;
+            transition: .4s;
+            letter-spacing: 1px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .btn-apoio:hover {
+            background-color: transparent;
+            border: 2px solid #629643;
+        }
+
+        .section-apoio img {
+            max-width: 100%;
+            margin-top: 20px;
+        }
+
+        /* Estilos do rodapé */
+        footer {
+    background: #082b2c;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.container-footer {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.footer-col {
+    width: 25%;
+    padding: 0 15px;
+    text-align: left;
+    margin-bottom: 30px; /* Espaço entre as colunas */
+}
+
+.footer-col h4 {
+    font-size: 22px;
+    color: white;
+    margin-bottom: 20px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 10px;
+}
+
+.footer-col ul li a {
+    font-size: 16px;
+    text-transform: capitalize;
+    color: white;
+    text-decoration: none;
+    font-weight: 300;
+    transition: all 0.3s ease;
+}
+
+.footer-col ul li a:hover {
+    color: #cecdcd;
+}
+
+.footer-col .medias-socias {
+    margin-top: 30px;
+}
+
+.footer-col .medias-socias a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    border-radius: 50%;
+    color: white;
+    border: 1px solid white;
+    transition: all 0.5s ease;
+}
+
+
+.footer-col .form-sub input {
+    width: calc(100% - 30px);
+    padding: 10px;
+    font-size: 15px;
+    outline: none;
+    border: 1px solid white;
+    color: white;
+    background-color: #576125;
+    border-radius: 20px;
+    margin-top: 2px;
+    margin-right: 10px;
+}
+
+.footer-col .form-sub button {
+    width: 80px;
+    padding: 10px;
+    font-size: 17px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: #5e9188;
+    border-radius: 3px;
+    font-weight: bold;
+    background-color: white;
+}
+
+@media (max-width: 768px) {
+    .footer-col {
+        width: 50%;
+    }
+
+    .container-footer {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-col .form-sub input {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+
+    
+
+
+
+}
+
+    </style>
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onda Tec</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Estilos adicionais para ajustes específicos */
+        .titulo-apoie {
+            font-size: 24px; /* Tamanho maior para o título "Apoie a causa" */
+        }
+        .texto-apoio p {
+            font-size: 14px; /* Tamanho menor para o texto da seção "Apoie a causa" */
+        }
+    </style>
+</head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-2A0/7W+Dj92iobK8nZt4JgI1KPc5x7A+AN9NBD+X3MXdA4J8VZgH5e1+g5D7utn7HnF5fXrgC8QoBB6a3VqPFg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<body>
+    <div id="body-wrapper">
+        <div class="section">
+            <img class="logop" src="img/image.png" alt="logo onda tec">
+        </div>
+        <div class="section-mapa">
+            <h1 class="titulo-visao">Visão</h1>
+            <h2 class="subtitulo-objetivos">Objetivos da Onda Tec</h2>
+            <div class="texto-mapa">
+                <div class="mapa-img">
+                    <img src="img/novomapa-removebg-preview.png" alt="mapa do brasil">
+                </div>
+                <div class="mapa-texto">
+                    <p>
+                        A empresa <span>OndaTec</span> tem como principal <span>objetivo</span> auxiliar cidadãos
+                        brasileiros que se encontram em situações adversas, como indígenas, pessoas com deficiência e crianças em situação de risco. Sua
+                        dedicação está voltada para o desenvolvimento de soluções e projetos que visam aprimorar a qualidade de vida dessas pessoas, além de
+                        <span>promover</span> maior igualdade e justiça social. A OndaTec acredita firmemente na importância de ir além do aspecto financeiro e investir em iniciativas que contribuam para a construção de uma sociedade mais justa e solidária.
+                        <br>
+                        <span>Por meio de suas ações, a empresa busca criar um impacto positivo, proporcionando oportunidades e apoio a grupos independentes.</span>
+                    </p>
+                    <a href="mapa.html" target="_blank"><button class="btn-saiba">saiba mais</button></a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<div class="backgroud-apoio">
-    <div class="section-apoio">
-        <h1>Apoie a causa</h1>
-        <br>
-        <h2>Seja um colaborador!</h2>
-        <br>
-        <h3>Apoiando a "OndaTec", você estará contribuindo para uma causa nobre e transformadora.</h3>
-        <div class="texto-apoio">
-            <div class="linha-vertical2"></div>
-            <p>
-                Através da atuação da empresa <span>OndaTec</span> , cidadãos brasileiros terão a oportunidade de
-                romper o ciclo de desigualdade e ter acesso a uma educação de qualidade.
-                <br>
-                Ao apoiar essa empresa
-                inovadora, você estará contribuindo para a construção de um país mais justo, onde todos os
-                brasileiros
-                tenham igualdade de oportunidades.
-                <br>
-                Juntos, podemos impulsionar a missão da OndaTec de <span>democratizar</span> o acesso à educação,
-                proporcionando
-                as ferramentas necessárias para transformar vidas. Ao apoiar essa
-                causa, estaremos construindo um futuro no qual indígenas, crianças em situação de abandono e pessoas
-                com deficiência possam desenvolver todo o seu potencial.
-                <br>
-                <span>Vamos abraçar essa onda de mudança e trabalhar juntos para construir uma sociedade mais
-                    inclusiva e
-                    igualitária para todos os brasileiros.</span>
-            </p>
-            <a href="apoio.html" target="_blank"><button class="btn-apoio">saiba mais</button></a>
-            <img src="img/apoiando-novo.png" width="450" alt="imagem de apoio">
+    <div class="backgroud-apoio">
+        <div class="section-apoio">
+            <h1 class="titulo-apoie">Apoie a causa</h1>
+            <h2>Seja um colaborador!</h2>
+            <h3>Apoiando a "OndaTec", você estará contribuindo para uma causa nobre e transformadora.</h3>
+            <div class="texto-apoio">
+                <div class="apoio-texto">
+                    <p>
+                        Através da atuação da empresa <span>OndaTec</span> , cidadãos brasileiros terão a oportunidade de romper o ciclo de desigualdade e ter acesso a uma educação de qualidade.
+                        <br>
+                        Ao apoiar essa empresa inovadora, você estará contribuindo para a construção de um país mais justo, onde todos os brasileiros tenham igualdade de oportunidades.
+                        <br>
+                        Juntos, podemos impulsionar a missão da OndaTec de <span>democratizar</span> o acesso à educação, proporcionando as ferramentas necessárias para transformar vidas. Ao apoiar essa
+                        causa, estaremos construindo um futuro no qual indígenas, crianças em situação de abandono e pessoas com deficiência possam desenvolver todo o seu potencial.
+                        <br>
+                        <span>Vamos abraçar essa onda de mudança e trabalhar juntos para construir uma sociedade mais inclusiva e igualitária para todos os brasileiros.</span>
+                    </p>
+                    <a href="apoio.html" target="_blank"><button class="btn-apoio">saiba mais</button></a>
+                </div>
+                <div class="apoio-img">
+                    <img src="img/apoiando-novo.png" width="450" alt="imagem de apoio">
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<footer>
-    <link rel="stylesheet" href="css/rodape.css">
-    <div class="container-footer">
-        <div class="row-footer">
-            <!-- footer col-->
-            <div class="footer-col">
-                <h4>Empresa</h4>
-                <ul>
-                    <li><a href="sobre.html">Quem somos</a></li>
-                    <li><a href=""> nossos serviços </a></li>
-                    <li><a href=""> política de privacidade </a></li>
-                    <li><a href="apoio.html"> Parceiros</a></li>
-                </ul>
-            </div>
-            <!--end footer col-->
-            <!-- footer col-->
-            <div class="footer-col">
-                <h4>Obter ajuda</h4>
-                <ul>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Nos conheça</a></li>
-                    <li><a href="#">Envie um email</a></li>
-                    <li><a href="#">Entre em contato</a></li>
-                </ul>
-            </div>
-            <!--end footer col-->
-            <!-- footer col-->
-            <div class="footer-col">
-                <h4>Projeto</h4>
-                <ul>
-                    <li><a href="Login.html">Ensino medio</a></li>
-                    <li><a href="Login.html">Graduação</a></li>
-                    <li><a href="Login.html">Fundamental 1</a></li>
-                    <li><a href="Login.html">Fundamental 2</a></li>
-                </ul>
-            </div>
-            <!--end footer col-->
-            <!-- footer col-->
-            <div class="footer-col">
-                <div class="email">
-                    <h4>Me envie um email.</h4>
-                </div>
-
-                <div class="form-sub">
-                    <form>
-                        <input type="email" placeholder="Digite o seu e-mail" required>
-                        <button>Enviar</button>
-                    </form>
-                </div>
-
-                <div class="medias-socias">
-                    <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a href="" target="_blank"><i class="fas fa-phone"></i></a>
-                </div>
-            </div>
-            <!--end footer col-->
-        </div>
-</footer>
+    <footer>
+        <div class="container-footer">
+            <div class="row-footer">
+                <!-- footer col-->
+                <footer>
+                    <div class="container-footer">
+                        <div class="footer-col">
+                            <h4>Empresa</h4>
+                            <ul>
+                                <li><a href="sobre.html">Quem somos</a></li>
+                                <li><a href="#">Nossos serviços</a></li>
+                                <li><a href="#">Política de privacidade</a></li>
+                                <li><a href="apoio.html">Parceiros</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-col">
+                            <h4>Obter ajuda</h4>
+                            <ul>
+                                <li><a href="#">FAQ</a></li>
+                                <li><a href="#">Nos conheça</a></li>
+                                <li><a href="#">Envie um email</a></li>
+                                <li><a href="#">Entre em contato</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-col">
+                            <h4>Projeto</h4>
+                            <ul>
+                                <li><a href="Login.html">Ensino médio</a></li>
+                                <li><a href="Login.html">Graduação</a></li>
+                                <li><a href="Login.html">Fundamental 1</a></li>
+                                <li><a href="Login.html">Fundamental 2</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-col">
+                            <div class="email">
+                                <h4>Me envie um email.</h4>
+                            </div>
+                            <div class="form-sub">
+                                <form>
+                                    <input type="email" placeholder="Digite o seu e-mail" required>
+                                    <button>Enviar</button>
+                                </form>
+                            </div>
+                           
+                            
+                        </div>
+                    </div>
+                </footer>
+                
