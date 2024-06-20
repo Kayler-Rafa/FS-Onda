@@ -9,6 +9,7 @@ const db = new sqlite3.Database('./database/database.db')
 db.run(`CREATE TABLE IF NOT EXISTS professor (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT,
+  password TEXT,
   email TEXT UNIQUE,
   materia_prof TEXT,
   cpf TEXT UNIQUE
@@ -23,8 +24,8 @@ db.run(`CREATE TABLE IF NOT EXISTS professor (
 /* POST create a new professor. */
 router.post('/', verifyJWT, (req, res) => {
   console.log(req.body)
-  const { username, email, materia_prof, cpf } = req.body
-  db.run('INSERT INTO professor (username, email, materia_prof, , cpf) VALUES (?,?,?,?)', [username, email, materia_prof, cpf], (err) => {
+  const { username, password, email, materia_prof, cpf } = req.body
+  db.run('INSERT INTO professor (username, password, email, materia_prof, cpf) VALUES (?,?,?,?)', [username, password, email, materia_prof, cpf], (err) => {
     if (err) {
       console.log("Erro ao criar o professor", err)
       return res.status(500).send({error: 'Erro ao criar o professor'})
@@ -64,8 +65,8 @@ router.get('/:id', verifyJWT, function(req, res, next) {
 /* PUT update a professor. */
 router.put('/:id', verifyJWT, function(req, res, next) {
   const { id } = req.params;
-  const { username, email, materia_prof, cpf } = req.body;
-  db.run('UPDATE professor SET username = ?, email = ?, materia_prof = ?, cpf = ?, WHERE id = ?', [username, email, materia_prof, , cpf, id], function(err) {
+  const { username, password, email, materia_prof, cpf } = req.body;
+  db.run('UPDATE professor SET username = ?, password = ?, email = ?, materia_prof = ?, cpf = ?, WHERE id = ?', [username, email, password, materia_prof, cpf, id], function(err) {
     if (err) {
       console.error('Erro ao atualizar o professor', err);
       return res.status(500).json({error: 'Erro ao atualizar o professor'});

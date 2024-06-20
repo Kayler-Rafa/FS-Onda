@@ -33,11 +33,13 @@ app.use(session({
 var indexRouter = require('./routes/index');
 var alunoRouter = require('./routes/aluno');
 var professorRouter = require('./routes/professor');
+var professoresRouter = require('./routes/professores');
 var authRouter = require('./routes/auth');
 
 // DEFINE ENDPOINTS PARA ROTAS
 app.use('/', indexRouter);
 app.use('/aluno', alunoRouter);
+app.use('/professores', professoresRouter);
 app.use('/professor', professorRouter);
 app.use('/auth', limiter, authRouter);
 
