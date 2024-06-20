@@ -32,6 +32,7 @@ app.use(session({
 // IMPORT DAS ROTAS
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var petsRouter = require('./routes/pets');
 var alunoRouter = require('./routes/aluno');
 var professoresRouter = require('./routes/professores');
 var authRouter = require('./routes/auth');
@@ -39,6 +40,7 @@ var authRouter = require('./routes/auth');
 // DEFINE ENDPOINTS PARA ROTAS
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/pets', petsRouter);
 app.use('/aluno', alunoRouter);
 app.use('/professores', professoresRouter);
 app.use('/auth', limiter, authRouter);

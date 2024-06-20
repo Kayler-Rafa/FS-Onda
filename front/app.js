@@ -23,12 +23,14 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var petsRouter = require('./routes/pets');
 var authRouter = require('./routes/auth');
+var alunoRouter = require('./routes/aluno');
 
 //DEFININDO ENDPOINTS
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/pets', petsRouter);
 app.use('/login', authRouter);
+app.use('/aluno', alunoRouter);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

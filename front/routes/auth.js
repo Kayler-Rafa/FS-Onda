@@ -29,6 +29,7 @@ router.post('/', (req, res) => {
             res.redirect('/pets')
         })
         .catch((error) => {
+            console.log("erro aqui>", error)
             res.render('layout', { body: 'pages/login', title: 'Express', error})
         })
 })

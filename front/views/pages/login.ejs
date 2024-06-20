@@ -34,6 +34,7 @@
 
         if (!username || !password) {
             event.preventDefault();
+            
             M.toast({ html: 'Por favor, preencha todos os campos', classes: 'red' })
         }
     });

@@ -1,16 +1,13 @@
 var express = require('express');
 var router = express.Router();
-const url = "https://automatic-halibut-w4p9xrj9wr4hgvxq-4000.app.github.dev/pets/"
+const url = "https://automatic-halibut-w4p9xrj9wr4hgvxq-4000.app.github.dev/aluno/register/"
 
-
-// /* GET pets listing. */
+// /* GET alunos listing. */
 router.get('/', function (req, res, next) {
-  let title = "Gestão de pets"
-  let cols = ["Id", "Nome", "Raça", "Cor", "Sexo", "Açôes"]
+  let title = "Gestão de alunos"
+  let cols = ["Id", "Username", "Password", "Email", "CPF", "Nível do Aluno", "Ações"]
 
   const token = req.session.token || ""
-  console.log("token ", token)
-
 
   fetch(url, { 
     method: 'GET',
@@ -26,20 +23,19 @@ router.get('/', function (req, res, next) {
       }
       return res.json()
     })
-    .then((pets) => {
+    .then((alunos) => {
       console.log('get')
-      res.render('layout', { body: 'pages/pets', title, pets, cols, error: "" });
+      res.render('layout', { body: 'pages/aluno', title, alunos, cols, error: "" });
     })
     .catch((error) => {
       console.log('Erro: ', error)
       res.redirect('/login')
     })
-  
 });
 
-// POST NEW PET
+// POST NEW ALUNO
 router.post("/", (req, res) => {
-  const { name, race, colour, gender } = req.body
+  const { username, password, email, cpf, nvl_aluno } = req.body
   const token = req.session.token || ""
   fetch(url, {
     method: "POST",
@@ -47,7 +43,7 @@ router.post("/", (req, res) => {
       "Content-Type": "application/json",
       'Authorization': `Bearer ${token}`
     },
-    body: JSON.stringify({ name, race, colour, gender })
+    body: JSON.stringify({ username, password, email, cpf, nvl_aluno })
   }).then(async (res) => {
     if (!res.ok) {
       const err = await res.json()
@@ -55,29 +51,25 @@ router.post("/", (req, res) => {
     }
     return res.json()
   })
-    .then((pet) => {
-      res.send(pet)
+    .then((aluno) => {
+      res.send(aluno)
     })
     .catch((error) => {
       res.status(500).send(error)
     })
 })
 
-
-// UPDATE PET
+// UPDATE ALUNO
 router.put("/:id", (req, res) => {
   const { id } = req.params
-  const { name, race, colour, gender } = req.body
+  const { username, password, email, cpf, nvl_aluno } = req.body
   const token = req.session.token || ""
   fetch(url + id, {
     method: "PUT",
     headers: { "Content-Type": "application/json", 
       'Authorization': `Bearer ${token}`
-
-
     },
-
-    body: JSON.stringify({ name, race, colour, gender })
+    body: JSON.stringify({ username, password, email, cpf, nvl_aluno })
   })
     .then(async (res) => {
       if (!res.ok) {
@@ -86,15 +78,15 @@ router.put("/:id", (req, res) => {
       }
       return res.json()
     })
-    .then((pet) => {
-      res.send(pet);
+    .then((aluno) => {
+      res.send(aluno);
     })
     .catch((error) => {
       res.status(500).send(error);
     })
 })
 
-// REMOVE PET
+// REMOVE ALUNO
 router.delete("/:id", (req, res) => {
   const { id } = req.params
   const token = req.session.token || ""
@@ -112,15 +104,15 @@ router.delete("/:id", (req, res) => {
       }
       return res.json()
     })
-    .then((pet) => {
-      res.send(pet);
+    .then((aluno) => {
+      res.send(aluno);
     })
     .catch((error) => {
       res.status(500).send(error);
     })
 })
 
-// GET PET BY ID
+// GET ALUNO BY ID
 router.get("/:id", (req, res) => {
   const { id } = req.params
   const token = req.session.token || ""
@@ -137,8 +129,8 @@ router.get("/:id", (req, res) => {
     }
     return res.json()
   })
-    .then((pet) => {
-      res.send(pet)
+    .then((aluno) => {
+      res.send(aluno)
     })
     .catch((error) => {
       res.status(500).send(error)
@@ -146,7 +138,3 @@ router.get("/:id", (req, res) => {
 })
 
 module.exports = router;
-
-
-
-
