@@ -7,36 +7,37 @@ var bcrypt = require('bcrypt');
 const db = new sqlite3.Database('./database/database.db')
 
 // CRIAR DB
-db.run(`CREATE TABLE IF NOT EXISTS users (
+db.run(`CREATE TABLE IF NOT EXISTS aluno (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE,
   password TEXT,
   email TEXT UNIQUE,
-  phone TEXT UNIQUE
+  cpf TEXT UNIQUE,
+  nvl_aluno TEXT
 )`, (err) => {
   if (err) {
-    console.error('Erro ao criar a tabela users: ', err);
+    console.error('Erro ao criar a tabela aluno: ', err);
   } else {
-    console.log('Tabela users criada com sucesso!');
+    console.log('Tabela aluno criada com sucesso!');
   }
 });
 
 // POST USER
 router.post('/register', (req, res, next)=>{
   console.log(req.body)
-  const { username, password, email, phone } = req.body
+  const { username, password, email, cpf, nvl_aluno } = req.body
   
-  db.get('SELECT * FROM users WHERE username = ?', username, (err, row) => {
+  db.get('SELECT * FROM aluno WHERE username = ?', username, (err, row) => {
   if (row) {
-    console.log("usuário ja existe", err)
-    return res.status(400).send({ error: 'usuário já existe' })
+    console.log("aluno ja existe", err)
+    return res.status(400).send({ error: 'aluno já existe' })
   }else {
     bcrypt.hash(password, 10, (err, hash) => {
       if (err) {
         console.log("erro ao criar hash da senha", err)
         return res.status(500).send({ error: 'Erro ao criar hash da senha' })
       } else {
-        db.run('INSERT INTO users (username, password, email, phone) VALUES (?,?,?,?)', [username, hash, email, phone], (err)=>{
+        db.run('INSERT INTO aluno (username, password, email, cpf, nvl_aluno) VALUES (?,?,?,?,?)', [username, hash, email, cpf, nvl_aluno], (err)=>{
           if (err) {
             console.log("Erro ao criar user: ", err)
             return res.status(500).send({ error: 'Erro ao criar user' })
@@ -52,12 +53,12 @@ router.post('/register', (req, res, next)=>{
 
 // GET USER 
 router.get('/', function(req, res, next) {
-  db.all('SELECT * FROM users', (err, users) => {
+  db.all('SELECT * FROM aluno', (err, aluno) => {
     if(err){
-      console.log("Users não encontrados ", err)
-      return res.status(500).send({error: "Users não encontrados"})
+      console.log("aluno não encontrados ", err)
+      return res.status(500).send({error: "aluno não encontrados"})
     } else {
-      res.status(200).send(users)
+      res.status(200).send(aluno)
     }
   })
 })
@@ -65,13 +66,13 @@ router.get('/', function(req, res, next) {
 // GET USER BY ID
 router.get('/:id', function(req, res, next) {
   const { id } = req.params;
-  db.get('SELECT * FROM users WHERE id = ?', [id], (err, row) => {
+  db.get('SELECT * FROM aluno WHERE id = ?', [id], (err, row) => {
     if (err) {
-      console.error('Usuário não encontrado', err);
-      return res.status(500).json({error: 'Usuário não encontrado'});
+      console.error('aluno não encontrado', err);
+      return res.status(500).json({error: 'aluno não encontrado'});
     }
     if (!row) {
-      return res.status(404).json({error: 'Usuário não encontrado'});
+      return res.status(404).json({error: 'aluno não encontrado'});
     }
     res.status(200).json(row);
   });
@@ -81,8 +82,8 @@ router.get('/:id', function(req, res, next) {
 // PUT USER
 router.put('/:id', function(req, res, next) {
   const { id } = req.params;
-  const { username, password, email, phone} = req.body
-  db.run('UPDATE users SET username = ?, password = ?, email = ?, phone = ? WHERE id = ?', [username, password, email, phone, id], (err) => {
+  const { username, password, email, cpf} = req.body
+  db.run('UPDATE aluno SET username = ?, password = ?, email = ?, cpf = ?, nvl_aluno = ?, WHERE id = ?', [username, password, email, cpf, nvl_aluno, id], (err) => {
     if(err){
       console.log("User não encontrados ", err)
       return res.status(500).send({error: "Erro ao atualizar user"})
@@ -107,30 +108,30 @@ router.patch('/:id', function(req, res, next) {
 
   const setClause = keys.map((key) => `${key} = ?`).join(', ');
 
-  db.run(`UPDATE users SET ${setClause} WHERE id = ?`, [...values, id], function(err) {
+  db.run(`UPDATE aluno SET ${setClause} WHERE id = ?`, [...values, id], function(err) {
     if (err) {
-      console.error('Erro ao atualizar o usuário parcialmente', err);
-      return res.status(500).json({error: 'Erro ao atualizar o usuário parcialmente'});
+      console.error('Erro ao atualizar o aluno parcialmente', err);
+      return res.status(500).json({error: 'Erro ao atualizar o aluno parcialmente'});
     }
     if (this.changes === 0) {
-      return res.status(404).json({error: 'Usuário não encontrado'});
+      return res.status(404).json({error: 'aluno não encontrado'});
     }
-    res.status(200).json({message: "Usuário atualizado parcialmente com sucesso"});
+    res.status(200).json({message: "aluno atualizado parcialmente com sucesso"});
   });
 });
 
 // DELETE USER
 router.delete('/:id', function(req, res, next) {
   const { id } = req.params;
-  db.run('DELETE FROM users WHERE id = ?', [id], function(err) {
+  db.run('DELETE FROM aluno WHERE id = ?', [id], function(err) {
     if (err) {
-      console.error('Erro ao deletar o usuário', err);
-      return res.status(500).json({error: 'Erro ao deletar o usuário'});
+      console.error('Erro ao deletar o aluno', err);
+      return res.status(500).json({error: 'Erro ao deletar o aluno'});
     }
     if (this.changes === 0) {
-      return res.status(404).json({error: 'Usuário não encontrado'});
+      return res.status(404).json({error: 'aluno não encontrado'});
     }
-    res.status(200).json({message: "Usuário deletado com sucesso"});
+    res.status(200).json({message: "aluno deletado com sucesso"});
   });
 });
 

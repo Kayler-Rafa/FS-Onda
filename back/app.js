@@ -31,14 +31,14 @@ app.use(session({
 
 // IMPORT DAS ROTAS
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var petsRouter = require('./routes/pets');
+var alunoRouter = require('./routes/aluno');
+var professorRouter = require('./routes/professor');
 var authRouter = require('./routes/auth');
 
 // DEFINE ENDPOINTS PARA ROTAS
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/pets', petsRouter);
+app.use('/aluno', alunoRouter);
+app.use('/professor', professorRouter);
 app.use('/auth', limiter, authRouter);
 
 // view engine setup
