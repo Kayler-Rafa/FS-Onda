@@ -1,7 +1,15 @@
-<h1><%= title %></h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <h1><%= title %></h1>
 
-    <!-- Formulário para adicionar/editar aluno -->
-    <form id="alunoForm">
+    <!-- Formulário para adicionar/editar professor -->
+    <form id="professorForm">
         <input required type="hidden" name="id" id="id">
         <label for="username">Username</label>
         <input required name="username" id="username" type="text"> <br>
@@ -11,8 +19,8 @@
         <input required name="email" id="email" type="email"> <br>
         <label for="cpf">CPF</label>
         <input required name="cpf" id="cpf" type="text"> <br>
-        <label for="nvl_aluno">Nível Aluno</label>
-        <input required name="nvl_aluno" id="nvl_aluno" type="text"> <br>
+        <label for="materia_prof">Matéria</label>
+        <input required name="materia_prof" id="materia_prof" type="text"> <br>
 
         <button type="submit">Enviar</button>
         <button type="reset">Cancelar</button>
@@ -21,7 +29,7 @@
     <!-- Exibição de erros -->
     <span id="error"></span>
 
-    <!-- Tabela de alunos -->
+    <!-- Tabela de professores -->
     <table>
         <thead>
             <tr>
@@ -32,14 +40,14 @@
             </tr>
         </thead>
         <tbody>
-            <% for(let aluno of alunos){ %>
+            <% for(let professor of professores){ %>
                 <tr>
-                    <% for(let prop in aluno){ %>
-                        <td><%= aluno[prop] %></td>
+                    <% for(let prop in professor){ %>
+                        <td><%= professor[prop] %></td>
                     <% } %>
                     <td>
-                        <button onclick="editAluno('<%= aluno.id %>')">Editar</button>
-                        <button onclick="deleteAluno('<%= aluno.id %>')">Deletar</button>
+                        <button onclick="editProfessor('<%= professor.id %>')">Editar</button>
+                        <button onclick="deleteProfessor('<%= professor.id %>')">Deletar</button>
                     </td>
                 </tr>
             <% } %>
@@ -47,23 +55,23 @@
     </table>
 
     <script>
-        const form = document.getElementById('alunoForm');
+        const form = document.getElementById('professorForm');
 
         form.addEventListener("submit", (e) => {
             e.preventDefault();
-            const aluno = mountDataForm();
-            let id = aluno.id;
+            const professor = mountDataForm();
+            let id = professor.id;
             let METHOD = id ? 'PUT' : 'POST';
-            let URL = id ? `/aluno/${id}` : '/aluno';
+            let URL = id ? `/professores/${id}` : '/professores';
 
-            createOrUpdate(aluno, URL, METHOD);
+            createOrUpdate(professor, URL, METHOD);
         });
 
-        function createOrUpdate(aluno, URL, METHOD){
+        function createOrUpdate(professor, URL, METHOD){
             fetch(URL, {
                 method: METHOD,
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(aluno)
+                body: JSON.stringify(professor)
             })
             .then(async (res) => {
                 return await checkError(res);
@@ -77,18 +85,18 @@
             });
         }
 
-        function editAluno(id){
-            fetch(`/aluno/${id}`, {
+        function editProfessor(id){
+            fetch(`/professores/${id}`, {
                 method: "GET"
             })
             .then(async (res) => {
                 return await checkError(res);
             })
-            .then((aluno) => {
-                for (let prop in aluno){
+            .then((professor) => {
+                for (let prop in professor){
                     const input = document.querySelector(`input[name="${prop}"]`);
                     if (input) {
-                        input.value = aluno[prop];
+                        input.value = professor[prop];
                     }
                 }
             })
@@ -97,8 +105,8 @@
             });
         }
 
-        function deleteAluno(id){
-            fetch(`/aluno/${id}`, {
+        function deleteProfessor(id){
+            fetch(`/professores/${id}`, {
                 method: "DELETE"
             })
             .then(async (res) => {
@@ -122,10 +130,12 @@
 
         function mountDataForm(){
             const formData = new FormData(form);
-            const aluno = {};
+            const professor = {};
             formData.forEach((v, k) => {
-                aluno[k] = v;
+                professor[k] = v;
             });
-            return aluno;
+            return professor;
         }
     </script>
+</body>
+</html>

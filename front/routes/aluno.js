@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const url = "https://automatic-halibut-w4p9xrj9wr4hgvxq-4000.app.github.dev/aluno/register/"
+const url = "https://automatic-halibut-w4p9xrj9wr4hgvxq-4000.app.github.dev/aluno/"
 
 // /* GET alunos listing. */
 router.get('/', function (req, res, next) {
@@ -37,7 +37,7 @@ router.get('/', function (req, res, next) {
 router.post("/", (req, res) => {
   const { username, password, email, cpf, nvl_aluno } = req.body
   const token = req.session.token || ""
-  fetch(url, {
+  fetch(url+'/register', {
     method: "POST",
     headers: { 
       "Content-Type": "application/json",
