@@ -1,0 +1,118 @@
+<h1><%=title%></h1>
+
+<form id="professorForm">
+    <input required type="hidden" name="id" id="id">
+    <label for="username">Nome</label> 
+    <input required name="username" id="username" type="text"> <br>
+    <label for="password">Senha</label> 
+    <input required name="password" id="password" type="text"> <br>
+    <label for="email">Email</label> 
+    <input required name="email" id="email" type="text"> <br>
+    <label for="phone">Telefone</label> 
+    <input required name="phone" id="phone" type="text"> <br>
+
+    <button type="submit">Enviar</button>
+    <button type="reset">Cancelar</button>
+</form>
+
+<span id="error"></span>
+
+<%if(error){%>
+    <span><%=error%></span>
+<%}%>
+
+<table>
+    <thead>
+        <tr>
+            <%for(let col of cols){%>
+            <th><%=col%></th>
+            <%}%>
+        </tr>
+    </thead>
+    <tbody>
+        <%for(let professor of professors){%>
+        <tr>
+            <%for(let prop in professor){%>
+            <td><%=professor[prop]%></td>
+            <%}%>
+            <td>
+                <button onclick="editProfessor('<%=professor.id%>')">Editar</button>
+                <button onclick="deleteProfessor('<%=professor.id%>')">Deletar</button>
+            </td>
+        </tr>
+        <%}%>
+    </tbody>
+</table>
+
+<script>
+    const form = document.getElementById('professorForm')
+
+    form.addEventListener("submit", (e)=>{
+        e.preventDefault()
+        const professor = mountDataForm()
+        let id = professor.id;
+        let METHOD = id ? 'PUT' : 'POST';
+        let URL = id ? `/professors/${id}` : 'professors';
+        
+        createOrUpdate(professor, URL, METHOD)
+    })
+
+    function createOrUpdate(professor, URL, METHOD){
+        console.log(professor)
+        fetch(URL, {
+            method: METHOD,
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(professor)
+        })
+        .then(async (res)=>{ return await checkError(res) })
+        .then((professor)=>{ 
+            form.reset()
+            window.location.reload()
+        })
+        .catch((error)=>{ document.getElementById('error').innerText = error})
+    }
+
+    function editProfessor(id){
+        fetch("/professors/" + id, {
+            method: "GET"
+        })
+            .then(async (res)=>{ return await checkError(res) })
+                .then((professor)=>{ 
+                    console.log('retornou o professor', professor) 
+                    for(let prop in professor){
+                        const input = document.querySelector(`input[name="${prop}"]`)
+                        input ? input.value = professor[prop] : input.value = ""
+                    }
+                })
+                .catch((error)=>{ document.getElementById('error').innerText = error})
+        }
+    
+    function deleteProfessor(id){
+        fetch("/professors/" + id, {
+            method: "DELETE"
+        })
+            .then(async (res)=>{ return await checkError(res) })
+                .then((professor)=>{ 
+                    window.location.reload()
+                })
+                .catch((error)=>{ document.getElementById('error').innerText = error})
+    }
+
+    async function checkError(res){
+        if(!res.ok){
+            const err = await res.json()
+            throw err
+        }
+        return res.json()
+    }
+
+    function mountDataForm(){
+        const formData = new FormData(form)
+        const professor = {}
+        formData.forEach((v, k)=>{
+            professor[k] = v
+        })
+        return professor
+    }
+
+</script>

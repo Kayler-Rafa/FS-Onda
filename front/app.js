@@ -20,14 +20,14 @@ app.use(session({
 
 // IMPORTANDO /ROUTES
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var petsRouter = require('./routes/pets');
+var professorRouter = require('./routes/professor'); //professor
+var alunoRouter = require('./routes/aluno');
 var authRouter = require('./routes/auth');
 
 //DEFININDO ENDPOINTS
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/pets', petsRouter);
+app.use('/professor', professorRouter);
+app.use('/aluno', alunoRouter);
 app.use('/login', authRouter);
 
 // view engine setup

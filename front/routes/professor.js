@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
-const url = "https://cautious-sniffle-x6j4g7x4r6jf6xxw-4000.app.github.dev/users/"
+const url = "https://cuddly-space-yodel-56w97j59qv4c766q-4001.app.github.dev/professor/"
 
 
-/* GET users listing. */
+/* GET professor listing. */
 router.get('/', function(req, res, next) {
 
   fetch(url,{method: 'GET'})
@@ -14,15 +14,15 @@ router.get('/', function(req, res, next) {
     }
     return res.json()
   })
-  .then((users)=>{
+  .then((professor)=>{
     console.log('get')
-    let title = "Gestão de Usuários"
-    let cols = ["Id", "Nome", "Senha", "Email", "Telefone", "Açôes"]
-    res.render('layout', {body: 'pages/users', title, users, cols, error: ""});
+    let title = "Gestão de professor"
+    let cols = ["Id", "Nome", "Senha", "Email", "Materia", "Açôes"]
+    res.render('layout', {body: 'pages/professor', title, professor, cols, error: ""});
   })
   .catch((error)=>{
     console.log('Erro: ', error)
-    res.render('layout', {body: 'pages/users', title: "Gestão de usuários", error});
+    res.render('layout', {body: 'pages/professor', title: "Gestão de professor", error});
   })
   
 });

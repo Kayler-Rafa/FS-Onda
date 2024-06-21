@@ -1,15 +1,15 @@
 <h1><%=title%></h1>
 
-<form id="userForm">
+<form id="alunoForm">
     <input required type="hidden" name="id" id="id">
-    <label for="username">Nome</label> 
-    <input required name="username" id="username" type="text"> <br>
-    <label for="password">Senha</label> 
-    <input required name="password" id="password" type="text"> <br>
-    <label for="email">Email</label> 
-    <input required name="email" id="email" type="text"> <br>
-    <label for="phone">Telefone</label> 
-    <input required name="phone" id="phone" type="text"> <br>
+    <label for="name">Nome</label> 
+    <input required name="name" id="name" type="text"> <br>
+    <label for="race">Raça</label> 
+    <input required name="race" id="race" type="text"> <br>
+    <label for="colour">Cor</label> 
+    <input required name="colour" id="colour" type="text"> <br>
+    <label for="gender">Sexo</label> 
+    <input required name="gender" id="gender" type="text"> <br>
 
     <button type="submit">Enviar</button>
     <button type="reset">Cancelar</button>
@@ -18,7 +18,7 @@
 <span id="error"></span>
 
 <%if(error){%>
-    <span><%=error%></span>
+    <span><%=JSON.stringify(error)%></span>
 <%}%>
 
 <table>
@@ -30,14 +30,14 @@
         </tr>
     </thead>
     <tbody>
-        <%for(let user of users){%>
+        <%for(let aluno of alunos){%>
         <tr>
-            <%for(let prop in user){%>
-            <td><%=user[prop]%></td>
+            <%for(let prop in aluno){%>
+            <td><%=aluno[prop]%></td>
             <%}%>
             <td>
-                <button onclick="editUser('<%=user.id%>')">Editar</button>
-                <button onclick="deleteUser('<%=user.id%>')">Deletar</button>
+                <button onclick="editaluno('<%=aluno.id%>')">Editar</button>
+                <button onclick="deletealuno('<%=aluno.id%>')">Deletar</button>
             </td>
         </tr>
         <%}%>
@@ -45,59 +45,61 @@
 </table>
 
 <script>
-    const form = document.getElementById('userForm')
+    const form = document.getElementById('alunoForm')
 
     form.addEventListener("submit", (e)=>{
         e.preventDefault()
-        const user = mountDataForm()
-        let id = user.id;
+        const aluno = mountDataForm()
+        let id = aluno.id;
         let METHOD = id ? 'PUT' : 'POST';
-        let URL = id ? `/users/${id}` : 'users';
+        let URL = id ? `/alunos/${id}` : 'alunos';
         
-        createOrUpdate(user, URL, METHOD)
+        createOrUpdate(aluno, URL, METHOD)
     })
 
-    function createOrUpdate(user, URL, METHOD){
-        console.log(user)
+    function createOrUpdate(aluno, URL, METHOD){
+        console.log(aluno)
         fetch(URL, {
             method: METHOD,
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(user)
+            body: JSON.stringify(aluno)
         })
         .then(async (res)=>{ return await checkError(res) })
-        .then((user)=>{ 
+        .then((aluno)=>{ 
             form.reset()
             window.location.reload()
         })
         .catch((error)=>{ document.getElementById('error').innerText = error})
     }
 
-    function editUser(id){
-        fetch("/users/" + id, {
+    function editaluno(id){
+        fetch("/alunos/" + id, {
             method: "GET"
         })
             .then(async (res)=>{ return await checkError(res) })
-                .then((user)=>{ 
-                    console.log('retornou o usuário', user) 
-                    for(let prop in user){
+                .then((aluno)=>{ 
+                    console.log('retornou o usuário', aluno) 
+                    for(let prop in aluno){
                         const input = document.querySelector(`input[name="${prop}"]`)
-                        input ? input.value = user[prop] : input.value = ""
+                        input ? input.value = aluno[prop] : input.value = ""
                     }
                 })
                 .catch((error)=>{ document.getElementById('error').innerText = error})
         }
     
-    function deleteUser(id){
-        fetch("/users/" + id, {
+        // DELETAR UM aluno PELO ID
+        function deletealuno(id){
+        fetch("/alunos/" + id, {
             method: "DELETE"
         })
             .then(async (res)=>{ return await checkError(res) })
-                .then((user)=>{ 
+                .then((aluno)=>{ 
                     window.location.reload()
                 })
-                .catch((error)=>{ document.getElementById('error').innerText = error})
+                .catch((error)=>{ document.getElementById('error').innerText = JSON.stringify(error) })
     }
 
+    // CHECAR ERRO NA RESPOSTA DA REQUISIÇÃO
     async function checkError(res){
         if(!res.ok){
                     const err = await res.json()
@@ -106,13 +108,14 @@
                 return res.json()
     }
 
+    // MONTAR DADOS DO FORMULÁRIO USANDO FORMDATA
     function mountDataForm(){
         const formData = new FormData(form)
-        const user = {}
+        const aluno = {}
         formData.forEach((v, k)=>{
-            user[k] = v
+            aluno[k] = v
         })
-        return user
+        return aluno
     }
 
 </script>
