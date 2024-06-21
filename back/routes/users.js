@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var sqlite3 = require("sqlite3");
-var jwt = require('jsonwebtoken');
+var verifyJWT = require('../auth/verify-token');
 var bcrypt = require('bcrypt');
 
 const db = new sqlite3.Database('./database/database.db')
@@ -22,7 +22,7 @@ db.run(`CREATE TABLE IF NOT EXISTS users (
 });
 
 // POST USER
-router.post('/register', (req, res, next)=>{
+router.post('/register', verifyJWT, (req, res, next)=>{
   console.log(req.body)
   const { username, password, email, phone } = req.body
   
@@ -51,7 +51,7 @@ router.post('/register', (req, res, next)=>{
 })
 
 // GET USER 
-router.get('/', function(req, res, next) {
+router.get('/', verifyJWT, function(req, res, next) {
   db.all('SELECT * FROM users', (err, users) => {
     if(err){
       console.log("Users não encontrados ", err)
@@ -63,7 +63,7 @@ router.get('/', function(req, res, next) {
 })
 
 // GET USER BY ID
-router.get('/:id', function(req, res, next) {
+router.get('/:id', verifyJWT, function(req, res, next) {
   const { id } = req.params;
   db.get('SELECT * FROM users WHERE id = ?', [id], (err, row) => {
     if (err) {
@@ -79,7 +79,7 @@ router.get('/:id', function(req, res, next) {
 
 
 // PUT USER
-router.put('/:id', function(req, res, next) {
+router.put('/:id', verifyJWT, function(req, res, next) {
   const { id } = req.params;
   const { username, password, email, phone} = req.body
   db.run('UPDATE users SET username = ?, password = ?, email = ?, phone = ? WHERE id = ?', [username, password, email, phone, id], (err) => {
@@ -95,7 +95,7 @@ router.put('/:id', function(req, res, next) {
 });
 
 // PATCH USER - vou ficar dedvendo o patch
-router.patch('/:id', function(req, res, next) {
+router.patch('/:id', verifyJWT, function(req, res, next) {
   const { id } = req.params;
   const fields = req.body;
   const keys = Object.keys(fields);
@@ -120,7 +120,7 @@ router.patch('/:id', function(req, res, next) {
 });
 
 // DELETE USER
-router.delete('/:id', function(req, res, next) {
+router.delete('/:id', verifyJWT, function(req, res, next) {
   const { id } = req.params;
   db.run('DELETE FROM users WHERE id = ?', [id], function(err) {
     if (err) {

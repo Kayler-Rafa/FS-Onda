@@ -6,7 +6,7 @@ const loginUrl = "https://automatic-halibut-w4p9xrj9wr4hgvxq-4000.app.github.dev
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('layout', { body: 'pages/login', title: 'Express', error: '' });
+    res.render('pages/login', { title: 'Express', error: '' });
 });
 
 router.post('/', (req, res) => {
@@ -27,7 +27,7 @@ router.post('/', (req, res) => {
         .then((data) => {
             console.log('veio', data);
             req.session.token = data.token;
-            res.redirect('/pets');
+            res.redirect('/');
         })
         .catch((error) => {
             console.log("erro aqui>", error);

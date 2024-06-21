@@ -6,7 +6,16 @@ const url = "https://automatic-halibut-w4p9xrj9wr4hgvxq-4000.app.github.dev/user
 /* GET users listing. */
 router.get('/', function(req, res, next) {
 
-  fetch(url,{method: 'GET'})
+  const token = req.session.token || ""
+  console.log("token ", token)
+
+  fetch(url, { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json', 
+      'Authorization': `Bearer ${token}`
+    }
+  })
   .then(async (res)=>{
     if(!res.ok){
         const err = await res.json()
@@ -22,7 +31,7 @@ router.get('/', function(req, res, next) {
   })
   .catch((error)=>{
     console.log('Erro: ', error)
-    res.render('layout', {body: 'pages/users', title: "Gestão de usuários", error});
+    res.redirect('/login')
   })
   
 });
@@ -30,9 +39,11 @@ router.get('/', function(req, res, next) {
 
 router.post("/", (req, res) => {
   const { username, password, email, phone } = req.body
+  const token = req.session.token || ""
   fetch(url + '/register', {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", 
+               'Authorization': `Bearer ${token}`},
     body: JSON.stringify({ username, password, email, phone })
   }).then(async (res) => {
     if (!res.ok) {
@@ -53,9 +64,11 @@ router.post("/", (req, res) => {
 router.put("/:id", (req, res)=>{
   const { id } = req.params
   const { username, password, email, phone } = req.body
+  const token = req.session.token || ""
   fetch(url+id, {
     method: "PUT",
-    headers: {"Content-Type": "application/json"},
+    headers: { "Content-Type": "application/json", 
+               'Authorization': `Bearer ${token}`},
     body: JSON.stringify({ username, password, email, phone })
   })
   .then(async (res)=>{
@@ -76,8 +89,11 @@ router.put("/:id", (req, res)=>{
 
 router.delete("/:id", (req, res)=>{
   const { id } = req.params
+  const token = req.session.token || ""
   fetch(url+id, {
-    method: "DELETE"
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", 
+               'Authorization': `Bearer ${token}`}
   })
   .then(async (res)=>{
     if(!res.ok){
@@ -97,8 +113,13 @@ router.delete("/:id", (req, res)=>{
 
 router.get("/:id", (req, res) => {
   const { id } = req.params
-  fetch(url+id, {
-    method: "GET"
+  const token = req.session.token || ""
+  fetch(url+id, { 
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json', 
+      'Authorization': `Bearer ${token}`
+    }
   }).then(async (res) => {
     if (!res.ok) {
       const err = await res.json()
