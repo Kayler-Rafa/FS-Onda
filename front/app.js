@@ -21,7 +21,6 @@ app.use(session({
 // IMPORTANDO /ROUTES
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var petsRouter = require('./routes/pets');
 var authRouter = require('./routes/auth');
 var alunoRouter = require('./routes/aluno');
 var professoresRouter = require('./routes/professores');
@@ -29,7 +28,6 @@ var professoresRouter = require('./routes/professores');
 //DEFININDO ENDPOINTS
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/pets', petsRouter);
 app.use('/login', authRouter);
 app.use('/aluno', alunoRouter);
 app.use('/professores', professoresRouter)
